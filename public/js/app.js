@@ -1973,6 +1973,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3026,6 +3029,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3042,7 +3054,8 @@ __webpack_require__.r(__webpack_exports__);
       authUser: {},
       booksPagination: {},
       books: [],
-      booksFilter: ''
+      booksFilter: '',
+      filtered: false
     };
   },
   methods: {
@@ -3067,6 +3080,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.filtered = this.booksFilter != '';
       var params = "?page=".concat(page, "\n                            &booksfilter=").concat(this.booksFilter);
       var route = "/get/books".concat(params);
       axios.get(route).then(function (response) {
@@ -3178,6 +3192,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3194,7 +3217,8 @@ __webpack_require__.r(__webpack_exports__);
       pageIsLoading: true,
       booksPagination: {},
       books: [],
-      booksFilter: ''
+      booksFilter: '',
+      filtered: false
     };
   },
   methods: {
@@ -3235,6 +3259,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.filtered = this.booksFilter != '';
       var params = "?page=".concat(page, "\n                            &my_books=1\n                            &booksfilter=").concat(this.booksFilter);
       var route = "/get/books/my".concat(params);
       axios.get(route).then(function (response) {
@@ -3858,7 +3883,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, ".router-link-exact-active.router-link-active {\n  background-color: #eee;\n  border: 1px solid #d8d8d8;\n  border-top: none;\n  border-bottom: none;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px;\n}\n.website-container {\n  margin: 0 2rem 2rem 2rem;\n}\n.main-nav {\n  border: 1px solid #ccc;\n  border-top: none;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px;\n}\n.main-nav a {\n  padding: 1.5rem 3rem;\n}\n@media (max-width: 768px) {\n.website-container {\n    margin-left: 0;\n    margin-right: 0;\n}\n.main-nav {\n    flex-direction: column;\n}\n.main-nav .router-link-exact-active.router-link-active {\n    border-top-left-radius: 7px;\n    border-top-right-radius: 7px;\n}\n}", ""]);
+exports.push([module.i, ".router-link-exact-active.router-link-active {\n  background-color: #eee;\n  border-color: #d8d8d8;\n}\n.website-container {\n  margin: 0 2rem 2rem 2rem;\n}\n.main-nav {\n  border: 1px solid #ccc;\n  border-top: none;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px;\n}\n.main-nav .nav-item.loader-list-item {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.main-nav a {\n  border: 1px solid transparent;\n  transition: background-color 0.25s ease-in-out;\n  border-top: none;\n  border-bottom: none;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px;\n  padding: 1.5rem 3rem;\n}\n.main-nav a:hover {\n  background-color: #f8f8f8;\n}\n@media (max-width: 768px) {\n.website-container {\n    margin-left: 0;\n    margin-right: 0;\n}\n.main-nav {\n    flex-direction: column;\n}\n.main-nav .router-link-exact-active.router-link-active {\n    border-top-left-radius: 7px;\n    border-top-right-radius: 7px;\n}\n}", ""]);
 
 // exports
 
@@ -51933,7 +51958,13 @@ var render = function() {
                 [_vm._v("Register")]
               )
             ]
-          )
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item float-right loader-list-item" }, [
+            _vm.pageIsLoading
+              ? _c("div", { staticClass: "spinner-border text-muted" })
+              : _vm._e()
+          ])
         ]),
         _vm._v(" "),
         _c("router-view")
@@ -53464,8 +53495,41 @@ var render = function() {
         _c(
           "pagination",
           {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.filtered,
+                expression: "!filtered"
+              }
+            ],
             attrs: { "show-disabled": "", data: _vm.booksPagination, limit: 1 },
             on: { "pagination-change-page": _vm.loadBooks }
+          },
+          [
+            _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+              _vm._v("Previous")
+            ]),
+            _vm._v(" "),
+            _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+              _vm._v("Next")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "pagination",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.filtered,
+                expression: "filtered"
+              }
+            ],
+            attrs: { "show-disabled": "", data: _vm.booksPagination, limit: 1 },
+            on: { "pagination-change-page": _vm.filterBooks }
           },
           [
             _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
@@ -53701,12 +53765,49 @@ var render = function() {
           _c(
             "pagination",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: !_vm.filtered,
+                  expression: "!filtered"
+                }
+              ],
               attrs: {
                 "show-disabled": "",
                 data: _vm.booksPagination,
                 limit: 1
               },
               on: { "pagination-change-page": _vm.loadMyBooks }
+            },
+            [
+              _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                _vm._v("Previous")
+              ]),
+              _vm._v(" "),
+              _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                _vm._v("Next")
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "pagination",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.filtered,
+                  expression: "filtered"
+                }
+              ],
+              attrs: {
+                "show-disabled": "",
+                data: _vm.booksPagination,
+                limit: 1
+              },
+              on: { "pagination-change-page": _vm.filterBooks }
             },
             [
               _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [

@@ -38,9 +38,18 @@
         </div>
         <div class="pagination">
             <pagination show-disabled
+                        v-show="!filtered"
                         :data="booksPagination"
                         :limit="1"
                         @pagination-change-page="loadMyBooks">
+                <span slot="prev-nav">Previous</span>
+                <span slot="next-nav">Next</span>
+            </pagination>
+            <pagination show-disabled
+                        v-show="filtered"
+                        :data="booksPagination"
+                        :limit="1"
+                        @pagination-change-page="filterBooks">
                 <span slot="prev-nav">Previous</span>
                 <span slot="next-nav">Next</span>
             </pagination>
@@ -70,6 +79,7 @@
                 booksPagination: {},
                 books: [],
                 booksFilter: '',
+                filtered: false,
             };
         },
         methods: {
@@ -100,6 +110,7 @@
                 });
             },
             filterBooks(page = 1) {
+                this.filtered = this.booksFilter != '';
                 const params = `?page=${page}
                                 &my_books=1
                                 &booksfilter=${this.booksFilter}`;

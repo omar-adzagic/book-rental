@@ -23,6 +23,9 @@
                 <li class="nav-item float-right" v-show="!pageIsLoading && !user.loggedIn">
                     <a href="/register" class="nav-link">Register</a>
                 </li>
+                <li class="nav-item float-right loader-list-item">
+                    <div class="spinner-border text-muted" v-if="pageIsLoading"></div>
+                </li>
             </ul>
             <router-view></router-view>
         </div>
@@ -109,11 +112,7 @@
     .router-link-exact-active.router-link-active {
         background-color: #eee;
         // color: #f5fafe;
-        border: 1px solid #d8d8d8;
-        border-top: none;
-        border-bottom: none;
-        border-bottom-left-radius: 7px;
-        border-bottom-right-radius: 7px;
+        border-color: #d8d8d8;
     }
     .website-container {
         margin: 0 2rem 2rem 2rem;
@@ -123,8 +122,22 @@
         border-top: none;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
+        .nav-item.loader-list-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         a {
+            border: 1px solid transparent;
+            transition: background-color 0.25s ease-in-out;
+            border-top: none;
+            border-bottom: none;
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
             padding: 1.5rem 3rem;
+            &:hover {
+                background-color: #f8f8f8;
+            }
         }
     }
 
