@@ -141,6 +141,12 @@
         }
     }
 
+    @media (max-width: 869px) {
+        .main-nav {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
     @media (max-width: 768px) {
         .website-container {
             margin-left: 0;
